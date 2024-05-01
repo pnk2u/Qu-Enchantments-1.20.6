@@ -3,8 +3,6 @@ package qu.quEnchantments.enchantments.tool;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -13,6 +11,8 @@ import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -24,11 +24,15 @@ import qu.quEnchantments.enchantments.CompoundEnchantment;
 import qu.quEnchantments.util.ModLootTableModifier;
 import qu.quEnchantments.util.config.ModConfig;
 
+import static qu.quEnchantments.util.ModLootTableModifier.LUCKY_MINER_NETHER;
+import static qu.quEnchantments.util.ModLootTableModifier.LUCKY_MINER_OVERWORLD;
+
+
 public class LuckyMinerEnchantment extends CompoundEnchantment {
 
     private static final ModConfig.LuckyMinerOptions CONFIG = QuEnchantments.getConfig().luckyMinerOptions;
-    public LuckyMinerEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot ... slotTypes) {
-        super(weight, type, slotTypes);
+    public LuckyMinerEnchantment(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -36,10 +40,10 @@ public class LuckyMinerEnchantment extends CompoundEnchantment {
         return CONFIG.enchantingTable;
     }
 
-    @Override
-    public int getMaxLevel() {
-        return CONFIG.isEnabled ? super.getMaxLevel() : 0;
-    }
+//    @Override
+//    public int getMaxLevel() {
+//        return CONFIG.isEnabled ? super.getMaxLevel() : 0;
+//    }
 
     @Override
     public boolean isAvailableForRandomSelection() {
@@ -73,9 +77,11 @@ public class LuckyMinerEnchantment extends CompoundEnchantment {
                 .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos))
                 .add(LootContextParameters.TOOL, stack).build(LootContextTypes.BLOCK);
 
-        LootTable lootTable = world.getServer().getLootManager().getLootTable(
-                isOverworld ? ModLootTableModifier.LUCKY_MINER_OVERWORLD : ModLootTableModifier.LUCKY_MINER_NETHER
-        );
+        LootTable lootTable = world.getServer().getReloadableRegistries().getLootTable(
+                isOverworld ?
+                RegistryKey.of(RegistryKeys.LOOT_TABLE, LUCKY_MINER_OVERWORLD) :
+                RegistryKey.of(RegistryKeys.LOOT_TABLE, LUCKY_MINER_NETHER));
+
         ObjectArrayList<ItemStack> list = lootTable.generateLoot(parameterSet);
 
         if (list.get(0) == null || !(list.get(0).getItem() instanceof BlockItem blockItem)) return;

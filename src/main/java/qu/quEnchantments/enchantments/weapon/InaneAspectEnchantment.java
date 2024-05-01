@@ -1,13 +1,12 @@
 package qu.quEnchantments.enchantments.weapon;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.enchantment.FireAspectEnchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import qu.quEnchantments.QuEnchantments;
+import qu.quEnchantments.enchantments.ModEnchantments;
 import qu.quEnchantments.enchantments.QuEnchantment;
 import qu.quEnchantments.util.config.ModConfig;
 import qu.quEnchantments.util.interfaces.IEntity;
@@ -16,16 +15,16 @@ public class InaneAspectEnchantment extends QuEnchantment {
 
     private static final ModConfig.InaneAspectOptions CONFIG = QuEnchantments.getConfig().inaneAspectOptions;
 
-    public InaneAspectEnchantment(Rarity weight, EquipmentSlot ... slotTypes) {
-        super(weight, EnchantmentTarget.WEAPON, slotTypes);
+    public InaneAspectEnchantment(Properties properties) {
+        super(properties);
     }
 
     @Override
     public boolean canAccept(Enchantment other) {
-        return !(other instanceof FireAspectEnchantment || other instanceof FreezingAspectEnchantment || other instanceof LeechingAspectEnchantment) && super.canAccept(other);
+        return super.canAccept(other) && (other != Enchantments.FIRE_ASPECT) && (other != ModEnchantments.FREEZING_ASPECT) && (other != ModEnchantments.LEECHING_ASPECT);
     }
 
-    @Override
+/*    @Override
     public int getMinPower(int level) {
         return 10 + 20 * (level - 1);
     }
@@ -38,7 +37,7 @@ public class InaneAspectEnchantment extends QuEnchantment {
     @Override
     public int getMaxLevel() {
         return CONFIG.isEnabled ? 2 : 0;
-    }
+    } */
 
     @Override
     public boolean isAvailableForRandomSelection() {

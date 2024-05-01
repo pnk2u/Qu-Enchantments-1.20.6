@@ -2,7 +2,6 @@ package qu.quEnchantments.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.EnchantedBookItem;
@@ -30,9 +29,8 @@ public abstract class CorruptedEnchantment extends QuEnchantment {
 
     private final CorruptedEnchantment.EnchantmentType enchantmentType;
 
-    public CorruptedEnchantment(CorruptedEnchantment.EnchantmentType enchantmentType, Rarity weight,
-                                EnchantmentTarget type, EquipmentSlot ... slotTypes) {
-        super(weight, type, slotTypes);
+    public CorruptedEnchantment(Properties properties) {
+        super(properties);
         this.enchantmentType = enchantmentType;
     }
 

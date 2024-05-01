@@ -1,7 +1,6 @@
 package qu.quEnchantments.enchantments;
 
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -17,24 +16,24 @@ import java.util.function.Predicate;
  */
 public abstract class CompoundEnchantment extends QuEnchantment {
 
-    public CompoundEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot ... slotTypes) {
-        super(weight, type, slotTypes);
+    public CompoundEnchantment(Properties properties) {
+        super(properties);
     }
 
-    @Override
-    public int getMaxLevel() {
-        return 100;
-    }
-
-    @Override
-    public int getMinPower(int level) {
-        return level;
-    }
-
-    @Override
-    public int getMaxPower(int level) {
-        return getMinPower(level) + 5;
-    }
+//    @Override
+//    public int getMaxLevel() {
+//        return 100;
+//    }
+//
+//    @Override
+//    public int getMinPower(int level) {
+//        return level;
+//    }
+//
+//    @Override
+//    public int getMaxPower(int level) {
+//        return getMinPower(level) + 5;
+//    }
 
     @Override
     public Text getName(int level) {

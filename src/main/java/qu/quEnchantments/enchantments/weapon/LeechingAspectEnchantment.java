@@ -1,10 +1,8 @@
 package qu.quEnchantments.enchantments.weapon;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.enchantment.FireAspectEnchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -14,23 +12,29 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import qu.quEnchantments.QuEnchantments;
+import qu.quEnchantments.enchantments.ModEnchantments;
 import qu.quEnchantments.enchantments.QuEnchantment;
 import qu.quEnchantments.util.config.ModConfig;
 
 public class LeechingAspectEnchantment extends QuEnchantment {
 
     private static final ModConfig.LeechingAspectOptions CONFIG = QuEnchantments.getConfig().leechingAspectOptions;
+//  private static final Enchantments enchantment = ;
 
-    public LeechingAspectEnchantment(Rarity weight, EquipmentSlot ... slotTypes) {
-        super(weight, EnchantmentTarget.WEAPON, slotTypes);
+    public LeechingAspectEnchantment(Properties properties) {
+        super(properties);
     }
+
+//    public LeechingAspectEnchantment(String name, Enchantment enchantment) {
+//
+//    }
 
     @Override
     public boolean canAccept(Enchantment other) {
-        return !(other instanceof FireAspectEnchantment || other instanceof FreezingAspectEnchantment || other instanceof InaneAspectEnchantment) && super.canAccept(other);
-    }
+            return super.canAccept(other) && other != Enchantments.FIRE_ASPECT && other != ModEnchantments.INANE_ASPECT && other != ModEnchantments.FREEZING_ASPECT;
+        }
 
-    @Override
+/*    @Override
     public int getMinPower(int level) {
         return 10 + 20 * (level - 1);
     }
@@ -43,7 +47,7 @@ public class LeechingAspectEnchantment extends QuEnchantment {
     @Override
     public int getMaxLevel() {
         return CONFIG.isEnabled ? 2 : 0;
-    }
+    } */
 
     @Override
     public boolean isAvailableForRandomSelection() {

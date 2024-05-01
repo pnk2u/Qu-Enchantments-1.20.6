@@ -1,10 +1,8 @@
 package qu.quEnchantments.enchantments.weapon;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.enchantment.FireAspectEnchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -12,6 +10,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import qu.quEnchantments.QuEnchantments;
+import qu.quEnchantments.enchantments.ModEnchantments;
 import qu.quEnchantments.enchantments.QuEnchantment;
 import qu.quEnchantments.util.config.ModConfig;
 
@@ -19,16 +18,18 @@ public class FreezingAspectEnchantment extends QuEnchantment {
 
     private static final ModConfig.FreezingAspectOptions CONFIG = QuEnchantments.getConfig().freezingAspectOptions;
 
-    public FreezingAspectEnchantment(Rarity weight, EquipmentSlot ... slotTypes) {
-        super(weight, EnchantmentTarget.WEAPON, slotTypes);
+    public FreezingAspectEnchantment(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public boolean canAccept(Enchantment other) {
-        return !(other instanceof FireAspectEnchantment || other instanceof InaneAspectEnchantment || other instanceof LeechingAspectEnchantment) && super.canAccept(other);
+    public boolean canAccept(Enchantment other)  {
+        return super.canAccept(other) && (other != Enchantments.FIRE_ASPECT) && (other != ModEnchantments.INANE_ASPECT) && (other != ModEnchantments.LEECHING_ASPECT);
     }
+    //    return !((other instanceof Enchantments.FIRE_ASPECT) || (other instanceof InaneAspectEnchantment) || (other instanceof LeechingAspectEnchantment)) && super.canAccept(other);
+    //}
 
-    @Override
+/*    @Override
     public int getMinPower(int level) {
         return 10 + 20 * (level - 1);
     }
@@ -41,7 +42,7 @@ public class FreezingAspectEnchantment extends QuEnchantment {
     @Override
     public int getMaxLevel() {
         return CONFIG.isEnabled ? 2 : 0;
-    }
+    } */
 
     @Override
     public boolean isAvailableForRandomSelection() {

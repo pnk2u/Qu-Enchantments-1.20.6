@@ -4,7 +4,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.SimpleParticleType;
+import org.jetbrains.annotations.Nullable;
 
 public class InaneParticle extends SpriteBillboardParticle {
 
@@ -43,17 +44,18 @@ public class InaneParticle extends SpriteBillboardParticle {
         this.setSpriteForAge(this.spriteProvider);
     }
 
-    @Environment(value= EnvType.CLIENT)
-    public static class Factory implements ParticleFactory<DefaultParticleType> {
+    @Environment(EnvType.CLIENT)
+    public static class Factory implements ParticleFactory<SimpleParticleType> {
         private final SpriteProvider spriteProvider;
 
         public Factory(SpriteProvider spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
+        @Nullable
         @Override
-        public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            InaneParticle inaneParticle = new InaneParticle(clientWorld, d, e, f, g, h, i, spriteProvider);
+        public Particle createParticle(SimpleParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            InaneParticle inaneParticle = new InaneParticle(world, x, y, z, velocityY, velocityX, velocityZ, spriteProvider);
             inaneParticle.setSprite(this.spriteProvider);
             return inaneParticle;
         }

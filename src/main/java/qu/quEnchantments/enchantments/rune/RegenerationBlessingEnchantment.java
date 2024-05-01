@@ -1,7 +1,6 @@
 package qu.quEnchantments.enchantments.rune;
 
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -15,19 +14,18 @@ import qu.quEnchantments.util.interfaces.IEntity;
 public class RegenerationBlessingEnchantment extends QuEnchantment {
 
     private static final ModConfig.RegenerationBlessingOptions CONFIG = QuEnchantments.getConfig().regenerationBlessingOptions;
-    public RegenerationBlessingEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot ... slotTypes) {
-        super(weight, type, slotTypes);
+    public RegenerationBlessingEnchantment(Properties properties) {
+        super(properties);
     }
-
-    @Override
-    public int getMinPower(int level) {
-        return 1;
-    }
-
-    @Override
-    public int getMaxPower(int level) {
-        return 50;
-    }
+//    @Override
+//    public int getMinPower(int level) {
+//        return 1;
+//    }
+//
+//    @Override
+//    public int getMaxPower(int level) {
+//        return 50;
+//    }
 
     @Override
     public boolean isAvailableForRandomSelection() {
@@ -39,10 +37,10 @@ public class RegenerationBlessingEnchantment extends QuEnchantment {
         return CONFIG.bookOffer;
     }
 
-    @Override
-    public int getMaxLevel() {
-        return CONFIG.isEnabled ? 1 : 0;
-    }
+//    @Override
+//    public int getMaxLevel() {
+//        return CONFIG.isEnabled ? 1 : 0;
+//    }
 
     @Override
     public boolean isAvailableForEnchantingTable() {

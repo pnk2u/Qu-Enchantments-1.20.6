@@ -1,18 +1,20 @@
 package qu.quEnchantments.enchantments;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import qu.quEnchantments.QuEnchantments;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class QuEnchantmentHelper {
 
@@ -43,7 +45,7 @@ public class QuEnchantmentHelper {
     public static void tickWhileEquipped(LivingEntity entity) {
         List<QuEnchantment> ticked = new ArrayList<>();
         forEachQuEnchantment((enchantment, stack, level) -> {
-            if (!enchantment.getEquipment(entity).containsValue(stack) || ticked.contains(enchantment)) return;
+            if (enchantment.getEquipment(entity).containsValue(stack) || ticked.contains(enchantment)) return;
             ticked.add(enchantment);
             enchantment.tickWhileEquipped(entity, stack, level);
         }, entity.getItemsEquipped());
@@ -68,24 +70,49 @@ public class QuEnchantmentHelper {
         }, stacks);
     }
 
-    private static void forEachQuEnchantment(Consumer consumer, ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return;
-        NbtList nbtList = stack.getEnchantments();
-        for (int i = 0; i < nbtList.size(); i++) {
-            NbtCompound compound = nbtList.getCompound(i);
-            Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(compound)).ifPresent(enchantment -> {
-                if (enchantment instanceof QuEnchantment) {
-                    consumer.accept((QuEnchantment) enchantment, stack, EnchantmentHelper.getLevelFromNbt(compound));
-                }
-            });
+    private static void forEachQuEnchantment(QuEnchantmentHelper.Consumer consumer, ItemStack stack) {
+        ItemEnchantmentsComponent itemEnchantmentsComponent = stack.getOrDefault(DataComponentTypes.ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
+        Iterator<Object2IntMap.Entry<RegistryEntry<Enchantment>>> var3 = itemEnchantmentsComponent.getEnchantmentsMap().iterator();
+
+        while(var3.hasNext()) {
+            Object2IntMap.Entry<RegistryEntry<Enchantment>> entry = var3.next();
+            consumer.accept((QuEnchantment)((RegistryEntry<?>)entry.getKey()).value(), stack, entry.getIntValue());
         }
+
     }
 
-    private static void forEachQuEnchantment(Consumer consumer, Iterable<ItemStack> stacks) {
+    private static void forEachQuEnchantment(QuEnchantmentHelper.Consumer consumer, Iterable<ItemStack> stacks) {
+
         for (ItemStack stack : stacks) {
             forEachQuEnchantment(consumer, stack);
         }
-    }
+
+
+//    private static void forEachQuEnchantment(Consumer consumer, ItemStack stack) {
+//        if (stack == null || stack.isEmpty()) return;
+//        ItemEnchantmentsComponent nbtList;
+//        nbtList = stack.getEnchantments();
+//        for (int i = 0; i < nbtList.getSize(); i++) {
+//            Set<RegistryEntry<Enchantment>> compound = nbtList.getEnchantments();
+//            Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(compound)).ifPresent(enchantment -> {
+//                if (enchantment instanceof QuEnchantment) {
+//                    consumer.accept((QuEnchantment) enchantment, stack, EnchantmentHelper.getLevel(enchantment, stack));
+//                }
+//            });
+//        }
+//    }
+//
+//    private static void forEachQuEnchantment(Consumer consumer, Iterable<ItemStack> stacks) {
+//        for (ItemStack stack : stacks) {
+//            forEachQuEnchantment(consumer, stack);
+//        }
+//    }
+
+//    @FunctionalInterface
+//    interface Consumer {
+//        void accept(QuEnchantment enchantment, ItemStack stack, int level);
+//    }
+}
 
     @FunctionalInterface
     interface Consumer {

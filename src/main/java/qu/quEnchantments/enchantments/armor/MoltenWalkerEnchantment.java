@@ -6,9 +6,7 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.enchantment.DepthStriderEnchantment;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.enchantment.FrostWalkerEnchantment;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -24,11 +22,11 @@ public class MoltenWalkerEnchantment extends QuEnchantment {
 
     private static final ModConfig.MoltenWalkerOptions CONFIG = QuEnchantments.getConfig().moltenWalkerOptions;
 
-    public MoltenWalkerEnchantment(Rarity weight, EquipmentSlot ... slotTypes) {
-        super(weight, EnchantmentTarget.ARMOR_FEET, slotTypes);
+    public MoltenWalkerEnchantment(Properties properties) {
+        super(properties);
     }
 
-    @Override
+ /*   @Override
     public int getMinPower(int level) {
         return level * 10;
     }
@@ -36,7 +34,7 @@ public class MoltenWalkerEnchantment extends QuEnchantment {
     @Override
     public int getMaxPower(int level) {
         return this.getMinPower(level) + 15;
-    }
+    } */
 
     @Override
     public boolean isAvailableForRandomSelection() {
@@ -48,10 +46,10 @@ public class MoltenWalkerEnchantment extends QuEnchantment {
         return CONFIG.bookOffer;
     }
 
-    @Override
+/*    @Override
     public int getMaxLevel() {
         return CONFIG.isEnabled ? 2 : 0;
-    }
+    } */
 
     @Override
     public boolean isTreasure() {
