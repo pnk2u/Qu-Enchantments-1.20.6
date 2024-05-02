@@ -48,7 +48,7 @@ public class QuEnchantmentHelper {
             if (enchantment.getEquipment(entity).containsValue(stack) || ticked.contains(enchantment)) return;
             ticked.add(enchantment);
             enchantment.tickWhileEquipped(entity, stack, level);
-        }, entity.getItemsEquipped());
+        }, entity.getEquippedItems());
     }
 
     public static void tickEquippedWhileMoving(LivingEntity entity, BlockPos pos) {
@@ -57,7 +57,7 @@ public class QuEnchantmentHelper {
             if (!enchantment.getEquipment(entity).containsValue(stack) || ticked.contains(enchantment)) return;
             ticked.add(enchantment);
             enchantment.tickEquippedWhileMoving(entity, pos, stack, level);
-        }), entity.getItemsEquipped());
+        }), entity.getEquippedItems());
     }
 
     public static void tick(LivingEntity holder, Iterable<ItemStack> stacks) {
@@ -70,19 +70,15 @@ public class QuEnchantmentHelper {
         }, stacks);
     }
 
-    private static void forEachQuEnchantment(QuEnchantmentHelper.Consumer consumer, ItemStack stack) {
+    private static void forEachQuEnchantment(Consumer consumer, ItemStack stack) {
         ItemEnchantmentsComponent itemEnchantmentsComponent = stack.getOrDefault(DataComponentTypes.ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-        Iterator<Object2IntMap.Entry<RegistryEntry<Enchantment>>> var3 = itemEnchantmentsComponent.getEnchantmentsMap().iterator();
-
-        while(var3.hasNext()) {
-            Object2IntMap.Entry<RegistryEntry<Enchantment>> entry = var3.next();
-            consumer.accept((QuEnchantment)((RegistryEntry<?>)entry.getKey()).value(), stack, entry.getIntValue());
+        for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : itemEnchantmentsComponent.getEnchantmentsMap()) {
+            consumer.accept((QuEnchantment) ((RegistryEntry<?>) entry.getKey()).value(), stack, entry.getIntValue());
         }
 
     }
 
-    private static void forEachQuEnchantment(QuEnchantmentHelper.Consumer consumer, Iterable<ItemStack> stacks) {
-
+    private static void forEachQuEnchantment(Consumer consumer, Iterable<ItemStack> stacks) {
         for (ItemStack stack : stacks) {
             forEachQuEnchantment(consumer, stack);
         }
