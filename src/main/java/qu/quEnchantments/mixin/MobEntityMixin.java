@@ -29,7 +29,7 @@ public abstract class MobEntityMixin extends LivingEntity {
     }
 
     @ModifyVariable(method = "tryAttack",
-            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityGroup;)F")),
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityType;)F")),
             at = @At(value = "STORE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityGroup;)F"),
             ordinal = 0)
     private float quEnchantments$injectGetAttackDamage(float original, Entity target) {
@@ -38,7 +38,7 @@ public abstract class MobEntityMixin extends LivingEntity {
 
     @Inject(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V"))
     private void quEnchantments$injectTickEnchantments(CallbackInfo ci) {
-        QuEnchantmentHelper.tick((MobEntity)(Object)this, this.getItemsEquipped());
+        QuEnchantmentHelper.tick((MobEntity)(Object)this, this.getEquippedItems());
         QuEnchantmentHelper.tickWhileEquipped((MobEntity)(Object)this);
     }
 

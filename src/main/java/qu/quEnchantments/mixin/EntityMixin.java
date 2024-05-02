@@ -3,6 +3,7 @@ package qu.quEnchantments.mixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.data.DataTracked;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -31,7 +32,8 @@ public abstract class EntityMixin implements IEntity {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void quEnchantments$trackInaneTicks(EntityType<?> type, World world, CallbackInfo ci) {
-        dataTracker.startTracking(INANE_TICKS, 0);
+        DataTracker.Builder builder = new DataTracker.Builder((DataTracked) this);
+        builder.add(INANE_TICKS, 0);
     }
 
     @Override
